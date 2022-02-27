@@ -8,7 +8,7 @@ const server=http.createServer((request,response)=>{
         if (request.url=="/AddUser")
         {
             res.writeHead(200, { 'Content-Type': 'application/json' });
-            res.write(JSON.stringify({ message: "Hello World" }));
+            res.write(JSON.stringify({ message: "Hello World POST" }));
             response.end();
 
         }
