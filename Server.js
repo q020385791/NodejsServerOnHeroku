@@ -1,16 +1,9 @@
 const http=require("http");
-const ip=0;
+const { request } = require("https");
+
 const server=http.createServer((request,response)=>{
 // response.end("hello nodejs server");
-    var ipAddr = request.headers["x-forwarded-for"];
-    if (ipAddr) {
-        var list = ipAddr.split(",");
-        ipAddr = list[list.length - 1];
-    } else {
-        ipAddr = req.connection.remoteAddress;
-    }
-    ip = ipAddr;
-
+    
     if (request.method == "POST") {
         if (request.url=="/AddUser")
         {
@@ -38,6 +31,8 @@ const PORT = process.env.PORT || 5000;
 const server_host = process.env.YOUR_HOST || '0.0.0.0';
 server.listen(PORT, server_host,()=>
 {
-    console.log(`Server is running at http:// ${ip}:${PORT}`); 
+    
+   
+    console.log(`Server is running at http:// ${server_host}:${PORT}`); 
 }); 
 
