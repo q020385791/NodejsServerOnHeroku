@@ -7,8 +7,8 @@ const server=http.createServer((request,response)=>{
     if (request.method == "POST") {
         if (request.url=="/AddUser")
         {
-            res.writeHead(200, { 'Content-Type': 'application/json' });
-            res.end(JSON.stringify({ message: "Hello World POST" }));
+            response.writeHead(200, { 'Content-Type': 'application/json' });
+            response.end(JSON.stringify({ message: "Hello World POST" }));
             // response.end();
 
         }
