@@ -26,10 +26,10 @@ const server=http.createServer((request,response)=>{
 
 
 
-const port=3000;
-const IP = "127.0.0.1";
-server.listen(port,IP,()=>
+const PORT = process.env.PORT || 5000;
+const server_host = process.env.YOUR_HOST || '0.0.0.0';
+server.listen(PORT,IP,()=>
 {
-    console.log(`Server is running at http:// ${IP}:${port}`); 
+    console.log(`Server is running at http:// ${server_host}:${PORT}`); 
 }); 
 
