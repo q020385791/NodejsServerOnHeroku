@@ -1,5 +1,5 @@
-const http=require("http");
-const { request } = require("https");
+const http=require("https");
+// const { request } = require("https");
 
 const server=http.createServer((request,response)=>{
 // response.end("hello nodejs server");
