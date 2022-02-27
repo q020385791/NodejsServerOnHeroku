@@ -2,7 +2,15 @@ const http=require("http");
 const ip=0;
 const server=http.createServer((request,response)=>{
 // response.end("hello nodejs server");
-    ip=request.headers.host;
+    var ipAddr = request.headers["x-forwarded-for"];
+    if (ipAddr) {
+        var list = ipAddr.split(",");
+        ipAddr = list[list.length - 1];
+    } else {
+        ipAddr = req.connection.remoteAddress;
+    }
+    ip = ipAddr;
+
     if (request.method == "POST") {
         if (request.url=="/AddUser")
         {
