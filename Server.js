@@ -28,7 +28,7 @@ const server=http.createServer((request,response)=>{
 
 const PORT = process.env.PORT || 5000;
 const server_host = process.env.YOUR_HOST || '0.0.0.0';
-server.listen(PORT,IP,()=>
+server.listen(PORT, server_host,()=>
 {
     console.log(`Server is running at http:// ${server_host}:${PORT}`); 
 }); 
