@@ -1,37 +1,43 @@
 const http=require("http");
+<<<<<<< HEAD
 var MongoClient = require('mongodb').MongoClient;
 var cors = require('cors');
 //雲端 Atlas
 var DBurl = "mongodb+srv://sa:sa@cluster0.0qrl0.mongodb.net/CustomSystem?retryWrites=true&w=majority";
 const DbName = "CustomSystem";
 const CollectionName = "User";
+=======
+const Login=require("./Login.js");
+
+// const { request } = require("https");
 
 //---testuserclass 測試物件傳值
-// const User = require("./Boss");
-// const Bossinfo = require("./Bossinfo.js");
+// const User=require("./Boss");
+// const Bossinfo=require("./Bossinfo.js");
 // //測試方法
-// var test = new User();
-// var rr = test._bossinfo.Getname();
+// var test=new User(); 
+//  var rr=test._bossinfo.Getname();
 // //  console.log(rr);
 // //測試傳值
-// test._bossinfo.Setname("changeed");
-// rr = test._bossinfo.Getname();
+//  test._bossinfo.Setname("changeed");
+//  rr=test._bossinfo.Getname();
 // //  console.log(rr);
 // //測試更換子Model
-// var tBossinfo = new Bossinfo();
+// var tBossinfo=new  Bossinfo();
 // tBossinfo.Setname("tinfoname");
-// test.SetUserinfo(tBossinfo);
-// console.log(test._bossinfo.Getname());
+//  test.SetUserinfo(tBossinfo);
+//  console.log(test._bossinfo.Getname());
 //---testclass
+>>>>>>> e5857e007525ce444fa4de1000663bda5b2e5eda
 const server=http.createServer((request,response)=>{
+
+
 // response.end("hello nodejs server");
-
-
     if (request.method == "POST") {
         if (request.url=="/AddUser")
         {
+<<<<<<< HEAD
             const chunks = [];
-            var _Login=new Login();
             request.on('data', chunk => {
             console.log('A chunk of data has arrived: ', chunk.toString());
             var data = JSON.parse(chunk.toString());
@@ -41,6 +47,13 @@ const server=http.createServer((request,response)=>{
             response.end(JSON.stringify({ message: 'Hello World POST' + data.firstName }));
           
             });
+=======
+            var _Login=new Login();
+            
+            
+            response.writeHead(200, { 'Content-Type': 'application/json' });
+            response.end(JSON.stringify({ message: "Hello World POST" }));
+>>>>>>> e5857e007525ce444fa4de1000663bda5b2e5eda
             // response.end();
         }
     }
