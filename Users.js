@@ -1,22 +1,22 @@
 
-const Userinfo=require("./Userinfo.js");
-class Users
+const Bossinfo=require("./Bossinfo.js");
+class Boss
 {
       constructor()
       {
-        this._userinfo=new Userinfo;
+        this._bossinfo=new Bossinfo;//詳細資訊
       }
 
         GetUserinfo()
         {   
-        return this._userinfo;
+        return this._bossinfo;
         };
 
-        SetUserinfo(userinfo)
+        SetUserinfo(bossinfo)
         {
-            this._userinfo=userinfo;
+            this._bossinfo=bossinfo;
 
         }
 
 }
-module.exports=Users;
+module.exports=Boss;

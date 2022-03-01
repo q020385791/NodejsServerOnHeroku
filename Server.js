@@ -2,21 +2,21 @@ const http=require("http");
 // const { request } = require("https");
 
 //---testuserclass 測試物件傳值
-// const User=require("./Users");
-// const Userinfo=require("./Userinfo.js");
-// //測試方法
-// var test=new User(); 
-//  var rr=test._userinfo.Getname();
-// //  console.log(rr);
-// //測試傳值
-//  test._userinfo.Setname("changeed");
-//  rr=test._userinfo.Getname();
-// //  console.log(rr);
-// //測試更換子Model
-// var tUserinfo=new  Userinfo();
-// tUserinfo.Setname("tinfoname");
-//  test.SetUserinfo(tUserinfo);
-//  console.log(test._userinfo.Getname());
+const User=require("./Users");
+const Bossinfo=require("./Bossinfo.js");
+//測試方法
+var test=new User(); 
+ var rr=test._bossinfo.Getname();
+//  console.log(rr);
+//測試傳值
+ test._bossinfo.Setname("changeed");
+ rr=test._bossinfo.Getname();
+//  console.log(rr);
+//測試更換子Model
+var tBossinfo=new  Bossinfo();
+tBossinfo.Setname("tinfoname");
+ test.SetUserinfo(tBossinfo);
+ console.log(test._bossinfo.Getname());
 //---testclass
 const server=http.createServer((request,response)=>{
 // response.end("hello nodejs server");

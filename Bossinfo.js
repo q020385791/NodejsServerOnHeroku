@@ -1,4 +1,4 @@
-class Userinfo
+class Bossinfo
 {
     constructor()
     {
@@ -15,4 +15,4 @@ class Userinfo
     this.name=name;
     }
 }
-module.exports=Userinfo;
+module.exports=Bossinfo;
