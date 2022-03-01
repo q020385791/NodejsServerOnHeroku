@@ -1,4 +1,6 @@
 const http=require("http");
+const Login=require("./Login.js");
+
 // const { request } = require("https");
 
 //---testuserclass 測試物件傳值
@@ -23,6 +25,9 @@ const server=http.createServer((request,response)=>{
     if (request.method == "POST") {
         if (request.url=="/AddUser")
         {
+            var _Login=new Login();
+            
+            
             response.writeHead(200, { 'Content-Type': 'application/json' });
             response.end(JSON.stringify({ message: "Hello World POST" }));
             // response.end();
