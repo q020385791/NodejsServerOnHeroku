@@ -4,11 +4,15 @@
   "description": "",
   "main": "Server.js",
   "scripts": {
-      "start": "node Server.js"
+    "start": "node Server.js"
   },
   "author": "",
   "license": "ISC",
   "engines": {
     "node": "14.18.1"
+  },
+  "dependencies": {
+    "cors": "^2.8.5",
+    "mongodb": "^4.4.0"
   }
 }
