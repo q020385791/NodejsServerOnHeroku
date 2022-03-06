@@ -43,6 +43,26 @@ const server=http.createServer((request,response)=>{
             });
             // response.end();
         }
+        var IFPass = false;
+        if (request.url =="/LoginVerify") {
+            const chunks = [];
+            // var _Login = new Login();
+            request.on('data', chunk => {
+                console.log('A chunk of data has arrived: ', chunk.toString());
+                var data = JSON.parse(chunk.toString());
+                LoginVerify(data.id, data.pw, function (pass)
+                {
+                    IFPass = pass;
+                    response.writeHead(200, { 'Content-Type': 'application/json', 'Access-Control-Allow-Origin': '*', "Access-Control-Allow-Credentials": "true", 'Access-Control-Allow-Methods': 'GET, PUT, POST, DELETE, OPTIONS' });
+                    response.end(JSON.stringify({ message: IFPass }));
+
+                });
+                
+
+            });
+            // response.end();
+        }
+        
     }
 
     if (request.method == "GET") 
@@ -75,4 +95,27 @@ function InsertUser(name) {
             db.close();
         });
     });
+}
+
+function LoginVerify(Boss_id, Boss_password,callBack)
+{
+    var pass = false;
+    MongoClient.connect(DBurl, function (err, db) {
+        if (err) throw err;
+        var dbo = db.db(DbName);
+        dbo.collection("Boss").find({ boss_id: Boss_id, boss_password: Boss_password }).toArray(function (err, result) {
+            if (err) throw err;
+            console.log(JSON.stringify(result));
+            var Count = result.length;
+            if (Count != 1) {
+                pass = false;
+            } else {
+                pass = true;
+            }
+            db.close();
+            return callBack(pass);
+        });
+       
+    });
+
 }
