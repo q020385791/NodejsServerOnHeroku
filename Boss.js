@@ -1,10 +1,11 @@
-
 const Bossinfo=require("./Bossinfo.js");
 var MongoClient = require('mongodb').MongoClient;
 var DBurl = "mongodb+srv://sa:sa@cluster0.0qrl0.mongodb.net/CustomSystem?retryWrites=true&w=majority";
 const DbName = "CustomSystem";
+
 class Boss
-{
+{ 
+  
 
       constructor()
       {

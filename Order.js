@@ -19,6 +19,85 @@ class Order{
             });
         });
     return true
+    };
+
+    static SelectOrderDetail(OrderBossId,OrdeMainId)
+    {
+    
+        MongoClient.connect(DBurl, function (err, db) {
+            if (err) return false
+            
+            var dbo = db.db(DbName);
+            dbo.collection("Orders").find({user_id:OrdeMainId,_id:ObjectId(OrdeMainId)}, function (err, res) {
+                if (err) return false
+                console.log(res);
+                db.close();
+            });
+        });
+    return true
+
+    };
+
+    // static DeleteOrder(OrderBossId,OrdeMainId)
+    // {
+    //     OrdeMain.OrdeMainId=OrdeMainId;
+    //     OrderBoss.OrderBossId=OrderBossId;
+    
+    //     MongoClient.connect(DBurl, function (err, db) {
+    //         if (err) return false
+            
+    //         var dbo = db.db(DbName);
+    //         dbo.collection("Orders").remove({user_id:OrdeMainId,_id:ObjectId(OrdeMainId),}, function (err, res) {
+    //             if (err) return false
+    //             console.log('Document Removed Successfully!');
+    //             db.close();
+    //         });
+    //     });
+    // return true
+    // };
+
+    static UpdateOrder(OrderBoss,OrdeMain,ReNewData)
+    {
+        var BeforeOrder=SelectOrderDetail(OrderBoss,OrdeMain)
+    
+        OrdeMain.details=OrderDetail;
+        OrderBoss.orders=OrdeMain;
+
+        MongoClient.connect(DBurl, function (err, db) {
+            if (err) return false
+            var dbo = db.db(DbName);
+            dbo.collection("Orders").update(BeforeOrder,{$set:{ReNewData}}, {w:1}, function (err, res) {
+                if (err) return false
+                console.log(res);
+                db.close();
+            });
+        });
+    return true
+    };
+    
+
+    static GetOrderByday(StartDate,EdnDate,callback){
+        MongoClient.connect(DBurl, function (err, db) {
+            if (err) throw err;
+            var dbo = db.db(DbName);
+
+            var _StartDate=new Date(StartDate)
+            var _EdnDate=new Date(EdnDate)
+            dbo.collection("Orders").find({'orders.wash_date':{  
+                    $gte: new Date(_StartDate.toISOString()), 
+                    $lte: new Date(_EdnDate.toISOString())            
+            }
+        }
+
+            ).toArray(function (err, result) {
+                if (err) throw err;
+                console.log(JSON.stringify(result));
+                db.close();
+               return callback(result);
+            });
+    
+        });
+
     }
 }
 
@@ -68,8 +147,5 @@ module.exports={
     OrderBoss:OrderBoss,
     OrdeMain:OrdeMain,
     OrderDetail:OrderDetail
-
-
 }
-
 

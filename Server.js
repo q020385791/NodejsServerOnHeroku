@@ -25,6 +25,16 @@ const DbName = "CustomSystem";
 // test.SetUserinfo(tBossinfo);
 // console.log(test._bossinfo.Getname());
 //---testclass
+
+//統一回傳格式
+class Response{
+    constructor(result, message) {
+        this.result = result;// true ,false
+        this.message = message; //datas
+      }
+
+}
+
 const server=http.createServer((request,response)=>{
 // response.end("hello nodejs server");
 
@@ -36,6 +46,7 @@ const server=http.createServer((request,response)=>{
                 console.log('A chunk of data has arrived: ', chunk.toString());
                 var data = JSON.parse(chunk.toString());
                 var IFsuccess=Boss.Insert(data.boss_id,data.boss_name,data.boss_password)
+                
                 console.log(IFsuccess)
                 response.writeHead(200, { 'Content-Type': 'application/json', 'Access-Control-Allow-Origin': '*', "Access-Control-Allow-Credentials": "true", 'Access-Control-Allow-Methods': 'GET, PUT, POST, DELETE, OPTIONS' });
                 response.end(JSON.stringify({ message: 'Hello World POST' + data.boss_id }));
@@ -45,6 +56,7 @@ const server=http.createServer((request,response)=>{
 
         if (request.url=="/Order")
         {
+
             request.on('data', chunk => {
                 console.log('A chunk of data has arrived: ', chunk.toString());
                 var data = JSON.parse(chunk.toString());
@@ -69,10 +81,6 @@ const server=http.createServer((request,response)=>{
                 });
 
         }
-
-
-
-
         var IFPass = false;
         if (request.url =="/LoginVerify") {
             const chunks = [];
@@ -81,12 +89,19 @@ const server=http.createServer((request,response)=>{
             request.on('data', chunk => {
                 console.log('A chunk of data has arrived: ', chunk.toString());
                 var data = JSON.parse(chunk.toString());
+               
+
                 LoginVerify(data.id, data.pw, function (pass)
                 {
                     IFPass = pass;
                     response.writeHead(200, { 'Content-Type': 'application/json', 'Access-Control-Allow-Origin': '*', "Access-Control-Allow-Credentials": "true", 'Access-Control-Allow-Methods': 'GET, PUT, POST, DELETE, OPTIONS' });
-                    response.end(JSON.stringify({ message: IFPass }));
-
+                    // response.end(JSON.stringify({ message: IFPass }));
+                    if(IFPass){
+                        response.end(JSON.stringify(new Response(IFPass,"登入成功")));
+                    }else{
+                        response.end(JSON.stringify(new Response(IFPass,"登入失敗 請檢察帳號密碼是否正確")));
+                    }
+                    
                 });
                 
 
@@ -98,8 +113,24 @@ const server=http.createServer((request,response)=>{
 
     if (request.method == "GET") 
     {
-        response.writeHead(200, { 'Content-Type': 'application/json', 'Access-Control-Allow-Origin': '*', "Access-Control-Allow-Credentials": "true", 'Access-Control-Allow-Methods': 'GET, PUT, POST, DELETE, OPTIONS'});
-        response.end(JSON.stringify({ message: "Hello World" }));
+        if (request.url =="/GetOrderByday") {
+            request.on('data', chunk => {
+                console.log('A chunk of data has arrived: ', chunk.toString());
+                var data = JSON.parse(chunk.toString());
+                var result="";
+                Order.Order.GetOrderByday(data.StartDate,data.EndDate,function(result)
+                {
+                    response.writeHead(200, { 'Content-Type': 'application/json', 'Access-Control-Allow-Origin': '*', "Access-Control-Allow-Credentials": "true", 'Access-Control-Allow-Methods': 'GET, PUT, POST, DELETE, OPTIONS'});
+                    response.end(JSON.stringify(result));
+
+
+                })
+            });
+           
+
+        }
+        // response.writeHead(200, { 'Content-Type': 'application/json', 'Access-Control-Allow-Origin': '*', "Access-Control-Allow-Credentials": "true", 'Access-Control-Allow-Methods': 'GET, PUT, POST, DELETE, OPTIONS'});
+        // response.end(JSON.stringify({ message: "Hello World" }));
         //response.end('Get received');
     }
 }); 
@@ -136,11 +167,12 @@ function InsertBoss(_boss_id,_boss_name,_boss_password){
 
 function LoginVerify(Boss_id, Boss_password,callBack)
 {
+    //testLogin
     var pass = false;
     MongoClient.connect(DBurl, function (err, db) {
         if (err) throw err;
         var dbo = db.db(DbName);
-        
+          
         dbo.collection("Boss").find({ boss_id: Boss_id, boss_password: Boss_password }).toArray(function (err, result) {
             if (err) throw err;
             console.log(JSON.stringify(result));
@@ -156,4 +188,23 @@ function LoginVerify(Boss_id, Boss_password,callBack)
 
     });
 
+}
+
+
+function CreateOrder(_boss_id,_boss_name,_boss_password){
+
+    MongoClient.connect(DBurl, function (err, db) {
+        if (err) throw err;
+        
+        let ThisBoss= new Boss()
+        ThisBoss.boss_id=_boss_id;
+        ThisBoss.boss_name=_boss_name;
+        ThisBoss.boss_password=_boss_password;
+        var dbo = db.db(DbName);
+        dbo.collection("Boss").insertOne(ThisBoss, function (err, res) {
+            if (err) throw err;
+            console.log("1 document inserted");
+            db.close();
+        });
+    });
 }
