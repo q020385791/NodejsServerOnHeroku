@@ -13,6 +13,6 @@
   },
   "dependencies": {
     "cors": "^2.8.5",
-    "mongodb": "^2.2.33"
+    "mongodb": "^4.6.0"
   }
 }
