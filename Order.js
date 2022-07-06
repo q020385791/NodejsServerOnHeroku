@@ -3,7 +3,7 @@ const DbName = "CustomSystem";
 var MongoClient = require('mongodb').MongoClient;
 
 class Order{
-    static InsertOrder(OrderBoss,OrdeMain,OrderDetail)
+    static InsertOrder(OrderBoss,OrdeMain,OrderDetail)  //ok
     {
         OrdeMain.details=OrderDetail;
         OrderBoss.orders=OrdeMain;
@@ -21,7 +21,7 @@ class Order{
     return true
     };
 
-    static SelectOrderDetail(OrderBossId,OrdeMainId)
+    static SelectOrderDetail(OrderBossId,OrdeMainId) //?
     {
     
         MongoClient.connect(DBurl, function (err, db) {
@@ -74,31 +74,7 @@ class Order{
         });
     return true
     };
-    
 
-    static GetOrderByday(StartDate,EdnDate,callback){
-        MongoClient.connect(DBurl, function (err, db) {
-            if (err) throw err;
-            var dbo = db.db(DbName);
-
-            var _StartDate=new Date(StartDate)
-            var _EdnDate=new Date(EdnDate)
-            dbo.collection("Orders").find({'orders.wash_date':{  
-                    $gte: new Date(_StartDate.toISOString()), 
-                    $lte: new Date(_EdnDate.toISOString())            
-            }
-        }
-
-            ).toArray(function (err, result) {
-                if (err) throw err;
-                console.log(JSON.stringify(result));
-                db.close();
-               return callback(result);
-            });
-    
-        });
-
-    }
 }
 
 class OrderBoss
@@ -107,7 +83,9 @@ class OrderBoss
     {
       this.user_id="";//店家ID
       this.customer_id="";//店家名稱
-      this.customer_name="";//店家密碼
+      this.customer_name="";//客戶姓名
+      this.customer_phone=""; // 客戶電話
+      this.customer_address=""; //客戶地址
       this.orders=new OrdeMain()
     }
 
@@ -118,11 +96,13 @@ class OrderBoss
 class OrdeMain{
     constructor()
     {
+      this.orders_status="";//訂單狀態
       this.total="";//總價
-      this.altert_date="";//通知日
+      this.inform_date="";//通知日
       this.wash_date="";//洗滌時間
       this.get_date="" //取得時間
       this.comment="";//備註
+      this.abandon=false;// 註銷
       this.details=Array();//詳細資訊
       
     }
@@ -142,10 +122,10 @@ class OrderDetail{
 }
 
 
-module.exports={
-    Order:Order,
-    OrderBoss:OrderBoss,
-    OrdeMain:OrdeMain,
-    OrderDetail:OrderDetail
-}
+// module.exports={
+//     Order:Order,
+//     OrderBoss:OrderBoss,
+//     OrdeMain:OrdeMain,
+//     OrderDetail:OrderDetail
+// }
 
