@@ -1,4 +1,4 @@
-let Order = require('../models/Order')
+let Order = require('../models/order')
 const mongoose = require('mongoose');
 let InsertOrder=(info)=>{
 var NewOrder=new Order(info);
